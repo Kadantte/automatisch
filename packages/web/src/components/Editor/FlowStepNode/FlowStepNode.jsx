@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import FlowStep from 'components/FlowStep';
 
-import { NodesContext } from '../EditorNew.jsx';
+import { NodesContext } from '../index.jsx';
 import { NodeWrapper, NodeInnerWrapper } from './style.js';
 
 function FlowStepNode({ data: { collapsed, laidOut }, id }) {
@@ -13,6 +13,7 @@ function FlowStepNode({ data: { collapsed, laidOut }, id }) {
     onStepOpen,
     onStepClose,
     onStepChange,
+    onFlowChange,
     onStepDelete,
     flowId,
     steps,
@@ -40,7 +41,8 @@ function FlowStepNode({ data: { collapsed, laidOut }, id }) {
             collapsed={collapsed}
             onOpen={() => onStepOpen(step.id)}
             onClose={onStepClose}
-            onChange={onStepChange}
+            onStepChange={onStepChange}
+            onFlowChange={onFlowChange}
             flowId={flowId}
             onContinue={() => openNextStep(step.id)}
             onDelete={onStepDelete}

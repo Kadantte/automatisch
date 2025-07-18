@@ -170,6 +170,7 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
+            { text: 'Triggers', link: '/apps/dropbox/triggers' },
             { text: 'Actions', link: '/apps/dropbox/actions' },
             { text: 'Connection', link: '/apps/dropbox/connection' },
           ],
@@ -447,6 +448,16 @@ export default defineConfig({
           items: [
             { text: 'Actions', link: '/apps/openrouter/actions' },
             { text: 'Connection', link: '/apps/openrouter/connection' },
+          ],
+        },
+        {
+          text: 'PDFMonkey',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/pdfmonkey/triggers' },
+            { text: 'Actions', link: '/apps/pdfmonkey/actions' },
+            { text: 'Connection', link: '/apps/pdfmonkey/connection' },
           ],
         },
         {
