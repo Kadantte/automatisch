@@ -75,6 +75,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Asana',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/asana/actions' },
+            { text: 'Connection', link: '/apps/asana/connection' },
+          ],
+        },
+        {
           text: 'Better Stack',
           collapsible: true,
           collapsed: true,
@@ -99,6 +108,16 @@ export default defineConfig({
           items: [
             { text: 'Actions', link: '/apps/carbone/actions' },
             { text: 'Connection', link: '/apps/carbone/connection' },
+          ],
+        },
+        {
+          text: 'Changedetection',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/changedetection/triggers' },
+            { text: 'Actions', link: '/apps/changedetection/actions' },
+            { text: 'Connection', link: '/apps/changedetection/connection' },
           ],
         },
         {
@@ -170,8 +189,19 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
+            { text: 'Triggers', link: '/apps/dropbox/triggers' },
             { text: 'Actions', link: '/apps/dropbox/actions' },
             { text: 'Connection', link: '/apps/dropbox/connection' },
+          ],
+        },
+        {
+          text: 'Eventbrite',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/eventbrite/triggers' },
+            { text: 'Actions', link: '/apps/eventbrite/actions' },
+            { text: 'Connection', link: '/apps/eventbrite/connection' },
           ],
         },
         {
@@ -181,6 +211,15 @@ export default defineConfig({
           items: [
             { text: 'Actions', link: '/apps/filter/actions' },
             { text: 'Connection', link: '/apps/filter/connection' },
+          ],
+        },
+        {
+          text: 'Firefly III',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/firefly-iii/triggers' },
+            { text: 'Connection', link: '/apps/firefly-iii/connection' },
           ],
         },
         {
@@ -352,6 +391,15 @@ export default defineConfig({
           ],
         },
         {
+          text: 'LibreTranslate',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Actions', link: '/apps/libretranslate/actions' },
+            { text: 'Connection', link: '/apps/libretranslate/connection' },
+          ],
+        },
+        {
           text: 'Mailchimp',
           collapsible: true,
           collapsed: true,
@@ -447,6 +495,16 @@ export default defineConfig({
           items: [
             { text: 'Actions', link: '/apps/openrouter/actions' },
             { text: 'Connection', link: '/apps/openrouter/connection' },
+          ],
+        },
+        {
+          text: 'PDFMonkey',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/pdfmonkey/triggers' },
+            { text: 'Actions', link: '/apps/pdfmonkey/actions' },
+            { text: 'Connection', link: '/apps/pdfmonkey/connection' },
           ],
         },
         {
@@ -598,6 +656,16 @@ export default defineConfig({
           ],
         },
         {
+          text: 'SurveyMonkey',
+          collapsible: true,
+          collapsed: true,
+          items: [
+            { text: 'Triggers', link: '/apps/surveymonkey/triggers' },
+            { text: 'Actions', link: '/apps/surveymonkey/actions' },
+            { text: 'Connection', link: '/apps/surveymonkey/connection' },
+          ],
+        },
+        {
           text: 'Telegram',
           collapsible: true,
           collapsed: true,
@@ -696,6 +764,7 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
+            { text: 'Actions', link: '/apps/wordpress/actions' },
             { text: 'Triggers', link: '/apps/wordpress/triggers' },
             { text: 'Connection', link: '/apps/wordpress/connection' },
           ],
