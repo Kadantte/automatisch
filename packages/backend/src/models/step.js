@@ -1,4 +1,5 @@
 import { URL } from 'node:url';
+import { ValidationError } from 'objection';
 import Base from '@/models/base.js';
 import App from '@/models/app.js';
 import Flow from '@/models/flow.js';
@@ -25,6 +26,18 @@ class Step extends Base {
       name: { type: ['string', 'null'], minLength: 1, maxLength: 255 },
       appKey: { type: ['string', 'null'], minLength: 1, maxLength: 255 },
       type: { type: 'string', enum: ['action', 'trigger'] },
+      structuralType: {
+        type: 'string',
+        enum: ['single', 'paths', 'branch'],
+        default: 'single',
+      },
+      parentStepId: { type: ['string', 'null'], format: 'uuid' },
+      branchConditions: {
+        type: ['array', 'null'],
+        items: {
+          type: 'object',
+        },
+      },
       connectionId: { type: ['string', 'null'], format: 'uuid' },
       status: {
         type: 'string',
@@ -59,6 +72,22 @@ class Step extends Base {
       join: {
         from: 'steps.connection_id',
         to: 'connections.id',
+      },
+    },
+    parentStep: {
+      relation: Base.BelongsToOneRelation,
+      modelClass: Step,
+      join: {
+        from: 'steps.parent_step_id',
+        to: 'steps.id',
+      },
+    },
+    childrenSteps: {
+      relation: Base.HasManyRelation,
+      modelClass: Step,
+      join: {
+        from: 'steps.id',
+        to: 'steps.parent_step_id',
       },
     },
     lastExecutionStep: {
@@ -137,9 +166,17 @@ class Step extends Base {
     return await App.findOneByKey(this.appKey);
   }
 
-  async test() {
+  async testAndContinue() {
     await testRun({ stepId: this.id });
 
+    const updatedStep = await this.$query()
+      .withGraphFetched('lastExecutionStep')
+      .patchAndFetch({ status: 'completed' });
+
+    return updatedStep;
+  }
+
+  async continueWithoutTest() {
     const updatedStep = await this.$query()
       .withGraphFetched('lastExecutionStep')
       .patchAndFetch({ status: 'completed' });
@@ -318,7 +355,7 @@ class Step extends Base {
     } = newStepData;
 
     if (connectionId && appKey) {
-      await user.authorizedConnections
+      await user.readableConnections
         .findOne({
           id: connectionId,
           key: appKey,
@@ -346,6 +383,56 @@ class Step extends Base {
     await updatedStep.updateWebhookUrl();
 
     return updatedStep;
+  }
+
+  async validateParentStep() {
+    if (!this.parentStepId) return true;
+
+    const parentStep = await this.$relatedQuery('parentStep').throwIfNotFound();
+
+    if (!['branch', 'paths'].includes(parentStep.structuralType)) {
+      throw new ValidationError({
+        data: {
+          parentStepId: [
+            {
+              message:
+                'Parent step must have structuralType of "branch" or "paths" to have children',
+            },
+          ],
+        },
+        type: 'invalidParentStepStructuralTypeError',
+      });
+    }
+  }
+
+  async validateBranchConditions() {
+    if (this.structuralType !== 'branch') return true;
+
+    if (!this.branchConditions || this.branchConditions.length === 0) {
+      throw new ValidationError({
+        data: {
+          branchConditions: [
+            {
+              message:
+                'Branch conditions are required and must contain at least one condition!',
+            },
+          ],
+        },
+        type: 'invalidBranchConditionsError',
+      });
+    }
+  }
+
+  async $beforeInsert(queryContext) {
+    await super.$beforeInsert(queryContext);
+    await this.validateParentStep();
+    await this.validateBranchConditions();
+  }
+
+  async $beforeUpdate(opt, queryContext) {
+    await super.$beforeUpdate(opt, queryContext);
+    await this.validateParentStep();
+    await this.validateBranchConditions();
   }
 
   async $afterInsert(queryContext) {
